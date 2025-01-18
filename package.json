@@ -1,0 +1,54 @@
+{
+  "name": "walrus-stats",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/traverse": "^7.23.2",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.4",
+    "body-parser": "^1.20.3",
+    "braces": "^3.0.3",
+    "cross-spawn": "^7.0.5",
+    "http-proxy-middleware": "^2.0.7",
+    "nanoid": "^3.3.8",
+    "nth-check": "^2.0.1",
+    "path-to-regexp": "^0.1.12",
+    "react": "*",
+    "react-chartjs-2": "^5.3.0",
+    "react-dom": "*",
+    "react-router": "*",
+    "react-router-dom": "*",
+    "react-scripts": "^5.0.1",
+    "recharts": "*",
+    "semver": "^7.5.2",
+    "web-vitals": "*",
+    "webpack-dev-middleware": "^5.3.4",
+    "ws": "^8.17.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

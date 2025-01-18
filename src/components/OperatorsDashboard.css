@@ -1,0 +1,206 @@
+/* General container styling */
+.OperatorsDashboard-container {
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f5f7fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Title styling */
+.OperatorsDashboard-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+}
+
+.OperatorsDashboard-title::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: #007bff;
+    margin: 10px auto 0;
+    border-radius: 5px;
+}
+
+/* Constants container styling */
+.constants-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.constant-box {
+    background: linear-gradient(145deg, #ffffff, #e3e6ea);
+    padding: 15px;
+    border-radius: 8px;
+    width: calc(33.333% - 10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.constant-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.constant-box h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #666;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.constant-box p {
+    margin: 5px 0 0;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Search box styling */
+.search-box {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto 20px;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 25px;
+    font-size: 16px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-box:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+/* Table styling */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.data-table thead {
+    background: #99efe4;
+    color: black;
+}
+
+.data-table thead tr {
+    height: 50px;
+}
+
+.table-header {
+    padding: 10px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.table-header.sortable:hover {
+    background-color: #99efe4;
+    text-decoration: underline;
+}
+
+.data-table tbody tr {
+    border-bottom: 1px solid #ddd;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f1f8ff;
+    cursor: pointer;
+}
+
+.data-table tbody tr.row-red {
+    background-color: #ffe6e6;
+}
+
+.table-cell {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* Remove bottom border from the last row */
+.data-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+/* Loader styling */
+.loader {
+    margin: 20px auto;
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid #007bff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Error message styling */
+.error-message {
+    color: #ff4d4d;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+    .constant-box {
+        width: calc(50% - 10px);
+    }
+
+    .data-table thead {
+        font-size: 14px;
+    }
+
+    .table-cell {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .constant-box {
+        width: 100%;
+    }
+
+    .data-table {
+        font-size: 12px;
+    }
+
+    .search-box {
+        width: 100%;
+    }
+}

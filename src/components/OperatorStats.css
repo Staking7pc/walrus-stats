@@ -1,0 +1,93 @@
+/* OperatorStats.css */
+.OperatorStats-container {
+    font-family: 'Roboto', Arial, sans-serif;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #f5f7fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tooltip {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    pointer-events: none;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+  
+  .OperatorStats-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+  }
+  
+  h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .blocks-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .block {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+  }
+  
+  .block.green {
+    background-color: #28a745;
+  }
+  
+  .block.yellow {
+    background-color: #ffc107;
+  }
+  
+  .block.red {
+    background-color: #dc3545;
+  }
+  
+  .graph-container {
+    height: 300px; /* Ensures responsiveness */
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .block {
+      width: 15px;
+      height: 15px;
+    }
+  
+    h2 {
+      font-size: 18px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .block {
+      width: 10px;
+      height: 10px;
+    }
+  
+    h2 {
+      font-size: 16px;
+    }
+  }
+  
