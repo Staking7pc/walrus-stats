@@ -50,7 +50,7 @@ const OperatorsDashboard = () => {
         ))}
       </div>
 
-      <h2 className="OperatorsDashboard-title">Walrus Operator Operators Dashboard</h2>
+      <h2 className="OperatorsDashboard-title">Walrus Operator Dashboard</h2>
 
       <input
         type="text"
