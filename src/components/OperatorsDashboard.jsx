@@ -53,7 +53,7 @@ const OperatorsDashboard = () => {
       </div>
 
       <h2 className="OperatorsDashboard-title">Walrus Operator Dashboard</h2>
-      <h3 className="last-updated">Last updated on: {lastUpdatedTimestamp}</h3>
+      <p className="last-updated">Last updated on: {lastUpdatedTimestamp}</p>
 
       <input
         type="text"
