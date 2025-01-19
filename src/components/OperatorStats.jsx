@@ -12,21 +12,20 @@ import {
   Filler,
 } from 'chart.js';
 import './OperatorStats.css';
-import Header from './Header'
-// Register Chart.js components
+import Header from './Header';
+
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip, Filler);
 
 const OperatorStats = () => {
   const { state } = useLocation();
   const { id } = useParams();
-  const [operatorData, setOperatorData] = useState(state?.operatorData || null); // Retrieve from state
+  const [operatorData, setOperatorData] = useState(state?.operatorData || null);
   const [historicData, setHistoricData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [timeRange, setTimeRange] = useState(144); // Default to 144 records (1 day)
+  const [timeRange, setTimeRange] = useState(144);
 
-  // Tooltip state
   const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, value: '', time: '' });
 
   useEffect(() => {
@@ -37,8 +36,9 @@ const OperatorStats = () => {
           `https://walrus.brightlystake.com/api/operator-historic-stats?x=${endpoint}`
         );
         const data = await response.json();
-        setHistoricData(data);
-        setFilteredData(data.slice(-timeRange)); // Default to the latest range
+        const reversedData = data.reverse(); // Reverse data for newest to oldest
+        setHistoricData(reversedData);
+        setFilteredData(reversedData.slice(-timeRange));
         setLoading(false);
       } catch (err) {
         console.error('Failed to fetch historic data:', err);
@@ -51,8 +51,7 @@ const OperatorStats = () => {
   }, [id, operatorData]);
 
   useEffect(() => {
-    // Update filtered data based on the selected time range
-    setFilteredData(historicData.slice(-timeRange));
+    setFilteredData(historicData.slice(0, timeRange)); // Adjusted for reversed data
   }, [timeRange, historicData]);
 
   const handleMouseEnter = (e, value, timestamp) => {
@@ -73,13 +72,12 @@ const OperatorStats = () => {
   if (loading) return <div className="loader">Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
 
-  // Data preparation for graph
   const ownedData = filteredData.map((record) => record.owned);
   const shardReadyData = filteredData.map((record) => record.shard_ready);
   const timestamps = filteredData.map((record) => record.timestamp);
 
   const graphData = {
-    labels: timestamps, // Labels are still needed for tooltips but won't display
+    labels: timestamps,
     datasets: [
       {
         label: 'Owned',
@@ -110,14 +108,14 @@ const OperatorStats = () => {
           title: (tooltipItems) => {
             const index = tooltipItems[0].dataIndex;
             const date = new Date(timestamps[index]);
-            return `Time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`; // Show formatted timestamp in tooltip
+            return `Time: ${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
           },
         },
       },
     },
     scales: {
       x: {
-        display: false, // Hide x-axis labels
+        display: false,
       },
       y: {
         title: {
@@ -130,10 +128,9 @@ const OperatorStats = () => {
 
   return (
     <div className="OperatorStats-container">
-    <Header/>
+      <Header />
       <h3 className="OperatorStats-title">Historic Stats for {operatorData?.endpoint}</h3>
 
-      {/* Time Range Selector */}
       <div className="time-range-selector">
         <label htmlFor="timeRange">Select Time Range: </label>
         <select
@@ -148,7 +145,6 @@ const OperatorStats = () => {
         </select>
       </div>
 
-      {/* Tooltip */}
       {tooltip.visible && (
         <div
           className="tooltip"
@@ -159,14 +155,13 @@ const OperatorStats = () => {
         </div>
       )}
 
-      {/* Blocks Section for Node Status */}
       <div className="section">
         <h2>Operator Status</h2>
         <div className="blocks-container">
           {filteredData.map((record, index) => (
             <div
               key={index}
-              className={`block ${record.node_status === 'Active' ? 'green' : 'red'}`}
+              className={`block ${record.node_status === 'Active' ? 'green' : record.node_status === 'NA' ? 'grey' : 'red'}`}
               onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
               onMouseLeave={handleMouseLeave}
             ></div>
@@ -174,13 +169,13 @@ const OperatorStats = () => {
         </div>
       </div>
 
-      {/* Event Pending Section */}
       <div className="section">
         <h2>Event Pending</h2>
         <div className="blocks-container">
           {filteredData.map((record, index) => {
             let color = 'green';
-            if (record.event_pending > 200) color = 'red';
+            if (record.event_pending === 'NA') color = 'grey';
+            else if (record.event_pending > 200) color = 'red';
             else if (record.event_pending > 0) color = 'yellow';
             return (
               <div
@@ -194,7 +189,6 @@ const OperatorStats = () => {
         </div>
       </div>
 
-      {/* Graph Section */}
       <div className="section">
         <h2>Shards - Owned/Ready</h2>
         <div className="graph-container">
