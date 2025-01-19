@@ -79,13 +79,14 @@ const OperatorsDashboard = () => {
           {filteredData.map((row) => {
             const hasNAValue = Object.values(row).some((val) => String(val) === 'NA');
             const isNodeStatusInactive = row.node_status !== 'Active';
+            const isEventPending = row.event_pending > 0 
             const rowStyle =
               isNodeStatusInactive
                 ? 'row-red'
                 : hasNAValue
                 ? 'row-light-yellow'
-                : row.event_pending > 200
-                ? 'row-light-red'
+                : isEventPending
+                ? 'row-light-yellow'
                 : row.event_pending > 0
                 ? 'row-yellow'
                 : '';

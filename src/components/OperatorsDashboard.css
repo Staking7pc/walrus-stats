@@ -141,6 +141,9 @@
     background-color: #ffe6e6;
 }
 
+.data-table tbody tr.row-light-yellow {
+    background-color: #FFFEE9;
+}
 .table-cell {
     padding: 10px;
     font-size: 14px;
