@@ -71,6 +71,10 @@
     color: #333;
 }
 
+.last-updated{
+    text-align: center;
+    align-items: center;
+}
 /* Search box styling */
 .search-box {
     width: 100%;

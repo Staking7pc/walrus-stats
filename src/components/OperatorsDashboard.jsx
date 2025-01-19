@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './OperatorsDashboard.css';
-import Header from './Header'
+import Header from './Header';
 
 const OperatorsDashboard = () => {
   const [constants, setConstants] = useState({});
@@ -32,15 +32,17 @@ const OperatorsDashboard = () => {
     );
   });
 
+  // Extract timestamp from the first row (if data exists)
+  const lastUpdatedTimestamp = data.length > 0 ? data[0].timestamp : 'N/A';
+
   // Handle row click
   const handleRowClick = (row) => {
     navigate(`/operator-stats/${row.endpoint}`, { state: { operatorData: row } });
   };
 
   return (
-
     <div className="OperatorsDashboard-container">
-    <Header/>
+      <Header />
       <div className="constants-container">
         {Object.entries(constants).map(([key, value]) => (
           <div key={key} className="constant-box">
@@ -51,6 +53,7 @@ const OperatorsDashboard = () => {
       </div>
 
       <h2 className="OperatorsDashboard-title">Walrus Operator Dashboard</h2>
+      <h3 className="last-updated">Last updated on: {lastUpdatedTimestamp}</h3>
 
       <input
         type="text"
@@ -64,7 +67,7 @@ const OperatorsDashboard = () => {
         <thead>
           <tr>
             {Object.keys(data[0] || {})
-              .filter((key) => key !== 'id' && key !== 'uptime_secs')
+              .filter((key) => key !== 'id' && key !== 'uptime_secs' && key !== 'timestamp')
               .map((key) => (
                 <th key={key} className="table-header">
                   {key}
@@ -94,7 +97,7 @@ const OperatorsDashboard = () => {
                 onClick={() => handleRowClick(row)} // Updated to use handleRowClick
               >
                 {Object.entries(row)
-                  .filter(([key]) => key !== 'id' && key !== 'uptime_secs')
+                  .filter(([key]) => key !== 'id' && key !== 'uptime_secs' && key !== 'timestamp')
                   .map(([key, value]) => (
                     <td key={key} className="table-cell">
                       {value}
