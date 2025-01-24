@@ -26,13 +26,13 @@ const OperatorsDashboard = () => {
       .catch((err) => console.error("Failed to fetch data", err));
   }, []);
 
-  // Fetch stake info
-  useEffect(() => {
-    fetch("https://walrus.brightlystake.com/api/stake-info")
-      .then((res) => res.json())
-      .then((data) => setStakeInfo(data))
-      .catch((err) => console.error("Failed to fetch stake info", err));
-  }, []);
+  // // Fetch stake info
+  // useEffect(() => {
+  //   fetch("https://walrus.brightlystake.com/api/stake-info")
+  //     .then((res) => res.json())
+  //     .then((data) => setStakeInfo(data))
+  //     .catch((err) => console.error("Failed to fetch stake info", err));
+  // }, []);
 
   // Map stake information to the data rows
   const mapStakeToData = (endpoint) => {
@@ -69,7 +69,7 @@ const OperatorsDashboard = () => {
   return (
     <div className="OperatorsDashboard-container">
       <Header />
-      
+
       <div className="constants-container">
         {Object.entries(constants)
           .filter(([key]) => key !== "time" && key !== "id") // Filter out 'time' and 'id'
@@ -95,17 +95,16 @@ const OperatorsDashboard = () => {
       <table className="data-table">
         <thead>
           <tr>
-            {[
-              "Stake",
-              ...Object.keys(data[0] || {}).filter(
+            {Object.keys(data[0] || {})
+              .filter(
                 (key) =>
                   key !== "id" && key !== "uptime_secs" && key !== "timestamp"
-              ),
-            ].map((key, index) => (
-              <th key={index} className="table-header">
-                {key}
-              </th>
-            ))}
+              )
+              .map((key, index) => (
+                <th key={index} className="table-header">
+                  {key}
+                </th>
+              ))}
           </tr>
         </thead>
         <tbody>
@@ -127,7 +126,6 @@ const OperatorsDashboard = () => {
                 className={`table-row ${rowStyle}`}
                 onClick={() => handleRowClick(row)}
               >
-                <td className="table-cell">{mapStakeToData(row.endpoint)}</td>
                 {Object.entries(row)
                   .filter(
                     ([key]) =>
