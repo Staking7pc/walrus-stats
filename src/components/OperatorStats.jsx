@@ -12,7 +12,7 @@ import {
   Filler,
 } from 'chart.js';
 import './OperatorStats.css';
-import Header from './Header';
+import Header from "./Header";
 
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Tooltip, Filler);
 
@@ -36,7 +36,7 @@ const OperatorStats = () => {
           `https://walrus.brightlystake.com/api/operator-historic-stats?x=${endpoint}`
         );
         const data = await response.json();
-        const reversedData = data.reverse(); // Reverse data for newest to oldest
+        const reversedData = data.reverse();
         setHistoricData(reversedData);
         setFilteredData(reversedData.slice(-timeRange));
         setLoading(false);
@@ -51,7 +51,7 @@ const OperatorStats = () => {
   }, [id, operatorData]);
 
   useEffect(() => {
-    setFilteredData(historicData.slice(0, timeRange)); // Adjusted for reversed data
+    setFilteredData(historicData.slice(0, timeRange));
   }, [timeRange, historicData]);
 
   const handleMouseEnter = (e, value, timestamp) => {
@@ -69,8 +69,8 @@ const OperatorStats = () => {
     setTooltip({ visible: false, x: 0, y: 0, value: '', time: '' });
   };
 
-  if (loading) return <div className="loader">Loading...</div>;
-  if (error) return <div className="error-message">{error}</div>;
+  if (loading) return <div className="OperatorStats-loader">Loading...</div>;
+  if (error) return <div className="OperatorStats-error-message">{error}</div>;
 
   const ownedData = filteredData.map((record) => record.owned);
   const shardReadyData = filteredData.map((record) => record.shard_ready);
@@ -82,15 +82,15 @@ const OperatorStats = () => {
       {
         label: 'Owned',
         data: ownedData,
-        borderColor: 'blue',
-        backgroundColor: 'rgba(0, 123, 255, 0.5)',
+        borderColor: 'rgba(0, 123, 255, 0.6)',
+        backgroundColor: 'rgba(0, 123, 255, 0.2)',
         fill: false,
       },
       {
         label: 'Shard Ready',
         data: shardReadyData,
-        borderColor: 'green',
-        backgroundColor: 'rgba(0, 200, 0, 0.5)',
+        borderColor: 'rgba(40, 167, 69, 0.6)',
+        backgroundColor: 'rgba(40, 167, 69, 0.2)',
         fill: false,
       },
     ],
@@ -100,9 +100,7 @@ const OperatorStats = () => {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: {
-        display: true,
-      },
+      legend: { display: true },
       tooltip: {
         callbacks: {
           title: (tooltipItems) => {
@@ -114,85 +112,82 @@ const OperatorStats = () => {
       },
     },
     scales: {
-      x: {
-        display: false,
-      },
-      y: {
-        title: {
-          display: true,
-          text: 'Values',
-        },
-      },
+      x: { display: false },
+      y: { title: { display: true, text: 'Values' } },
     },
   };
 
   return (
-    <div className="OperatorStats-container">
-      <Header />
-      <h3 className="OperatorStats-title">Historic Stats for {operatorData?.endpoint}</h3>
+    <div className="OperatorStats-wrapper">
+      <div className="OperatorStats-container">
+        <Header/>
+        <h3 className="OperatorStats-title">Historic Stats for {operatorData?.endpoint}</h3>
 
-      <div className="time-range-selector">
-        <label htmlFor="timeRange">Select Time Range: </label>
-        <select
-          id="timeRange"
-          value={timeRange}
-          onChange={(e) => setTimeRange(Number(e.target.value))}
-        >
-          <option value={144}>1 Day</option>
-          <option value={288}>2 Days</option>
-          <option value={720}>5 Days</option>
-          <option value={4320}>1 Month</option>
-        </select>
-      </div>
-
-      {tooltip.visible && (
-        <div
-          className="tooltip"
-          style={{ top: `${tooltip.y}px`, left: `${tooltip.x}px` }}
-        >
-          <p>Value: {tooltip.value}</p>
-          <p>Time: {tooltip.time}</p>
+        <div className="OperatorStats-time-range-selector">
+          <label htmlFor="timeRange">Select Time Range: </label>
+          <select
+            id="timeRange"
+            value={timeRange}
+            onChange={(e) => setTimeRange(Number(e.target.value))}
+          >
+            <option value={144}>1 Day</option>
+            <option value={288}>2 Days</option>
+            <option value={720}>5 Days</option>
+            <option value={4320}>1 Month</option>
+          </select>
         </div>
-      )}
 
-      <div className="section">
-        <h2>Operator Status</h2>
-        <div className="blocks-container">
-          {filteredData.map((record, index) => (
-            <div
-              key={index}
-              className={`block ${record.node_status === 'Active' ? 'green' : record.node_status === 'NA' ? 'grey' : 'red'}`}
-              onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
-              onMouseLeave={handleMouseLeave}
-            ></div>
-          ))}
-        </div>
-      </div>
+        {tooltip.visible && (
+          <div
+            className="OperatorStats-tooltip"
+            style={{ top: `${tooltip.y}px`, left: `${tooltip.x}px` }}
+          >
+            <p>Value: {tooltip.value}</p>
+            <p>Time: {tooltip.time}</p>
+          </div>
+        )}
 
-      <div className="section">
-        <h2>Event Pending</h2>
-        <div className="blocks-container">
-          {filteredData.map((record, index) => {
-            let color = 'green';
-            if (record.event_pending === 'NA') color = 'grey';
-            else if (record.event_pending > 200) color = 'red';
-            else if (record.event_pending > 0) color = 'yellow';
-            return (
+        <div className="OperatorStats-section">
+          <h2>Operator Status</h2>
+          <div className="OperatorStats-blocks-container">
+            {filteredData.map((record, index) => (
               <div
                 key={index}
-                className={`block ${color}`}
-                onMouseEnter={(e) => handleMouseEnter(e, record.event_pending, record.timestamp)}
+                className={`OperatorStats-block ${
+                  record.node_status === 'Active' ? 'green' : record.node_status === 'NA' ? 'grey' : 'red'
+                }`}
+                onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
                 onMouseLeave={handleMouseLeave}
               ></div>
-            );
-          })}
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="section">
-        <h2>Shards - Owned/Ready</h2>
-        <div className="graph-container">
-          <Line data={graphData} options={graphOptions} />
+        <div className="OperatorStats-section">
+          <h2>Event Pending</h2>
+          <div className="OperatorStats-blocks-container">
+            {filteredData.map((record, index) => {
+              let color = 'green';
+              if (record.event_pending === 'NA') color = 'grey';
+              else if (record.event_pending > 200) color = 'red';
+              else if (record.event_pending > 0) color = 'yellow';
+              return (
+                <div
+                  key={index}
+                  className={`OperatorStats-block ${color}`}
+                  onMouseEnter={(e) => handleMouseEnter(e, record.event_pending, record.timestamp)}
+                  onMouseLeave={handleMouseLeave}
+                ></div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="OperatorStats-section">
+          <h2>Shards - Owned/Ready</h2>
+          <div className="OperatorStats-graph-container">
+            <Line data={graphData} options={graphOptions} />
+          </div>
         </div>
       </div>
     </div>

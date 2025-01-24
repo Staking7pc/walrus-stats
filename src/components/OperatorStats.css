@@ -1,96 +1,100 @@
-/* OperatorStats.css */
-.OperatorStats-container {
-    font-family: 'Roboto', Arial, sans-serif;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-    background-color: #f5f7fa;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .tooltip {
-    position: absolute;
-    background-color: rgba(0, 0, 0, 0.75);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 12px;
-    pointer-events: none;
-    z-index: 1000;
-    white-space: nowrap;
-  }
-  
-  .OperatorStats-title {
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 700;
-    color: #333;
-  }
-  
-  .section {
-    margin-bottom: 30px;
-  }
-  
-  h2 {
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-  
-  .blocks-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .block {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-  }
-  
-  .block.green {
-    background-color: #28a745;
-  }
-  
-  .block.yellow {
-    background-color: #ffc107;
-  }
-  
-  .block.red {
-    background-color: #dc3545;
-  }
+.OperatorStats-wrapper .OperatorStats-container {
+  font-family: 'Roboto', Arial, sans-serif;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #f5f7fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
 
-  .block.grey {
-    background-color: #aeb2b6; /* Grey color for NA */
+.OperatorStats-wrapper .OperatorStats-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+}
+
+.OperatorStats-wrapper .OperatorStats-time-range-selector {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.OperatorStats-wrapper .OperatorStats-time-range-selector select {
+  padding: 10px 14px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.OperatorStats-wrapper .OperatorStats-blocks-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+  gap: 10px;
+  justify-content: center;
+}
+
+.OperatorStats-wrapper .OperatorStats-block {
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.OperatorStats-wrapper .OperatorStats-block:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Balanced colors */
+.OperatorStats-wrapper .OperatorStats-block.green {
+  background-color: #78c78b;
+}
+
+.OperatorStats-wrapper .OperatorStats-block.yellow {
+  background-color: #f8d568;
+}
+
+.OperatorStats-wrapper .OperatorStats-block.red {
+  background-color: #e87474;
+}
+
+.OperatorStats-wrapper .OperatorStats-block.grey {
+  background-color: #bfbfbf;
+}
+
+/* Tooltip Styling */
+.OperatorStats-wrapper .OperatorStats-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 12px;
+  z-index: 1000;
+  white-space: nowrap;
+  transform: translate(-50%, -10px);
+  pointer-events: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .OperatorStats-wrapper .OperatorStats-block {
+    width: 15px;
+    height: 15px;
   }
-  
-  .graph-container {
-    height: 300px; /* Ensures responsiveness */
-    width: 100%;
-    max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .OperatorStats-wrapper .OperatorStats-block {
+    width: 12px;
+    height: 12px;
   }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .block {
-      width: 15px;
-      height: 15px;
-    }
-  
-    h2 {
-      font-size: 18px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .block {
-      width: 10px;
-      height: 10px;
-    }
-  
-    h2 {
-      font-size: 16px;
-    }
-  }
+}
