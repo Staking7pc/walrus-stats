@@ -1,0 +1,140 @@
+/* General container styles */
+.shard-owners-container {
+  font-family: 'Arial', sans-serif;
+  padding: 20px;
+  text-align: center;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Title */
+h1 {
+  font-size: 2.5em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Search bar */
+.search-container {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search-container input {
+  padding: 10px;
+  font-size: 1.2em;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  width: 300px;
+}
+
+.search-container button {
+  padding: 10px 20px;
+  font-size: 1.2em;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.search-container button:hover {
+  background-color: #0056b3;
+}
+
+/* Search result */
+.search-result {
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #ffffff;
+  max-width: 600px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+.search-result h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+.search-result p {
+  margin: 5px 0;
+  font-size: 1em;
+  color: #555;
+}
+
+/* Legend */
+.legend {
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.legend span {
+  padding: 5px 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #ffffff;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.legend span:nth-child(1) { background-color: #FFCCCB; }
+.legend span:nth-child(2) { background-color: #FFD700; }
+.legend span:nth-child(3) { background-color: #ADFF2F; }
+.legend span:nth-child(4) { background-color: #1E90FF; }
+.legend span:nth-child(5) { background-color: #800080; }
+
+/* Blocks grid */
+.blocks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 5px;
+  margin: 20px auto;
+  width: 90%;
+  max-width: 800px;
+}
+
+.block {
+  width: 30px;
+  height: 30px;
+  border-radius: 3px;
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+.block-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 10px;
+  color: rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+/* Hover info */
+.hover-info {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 300px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: left;
+}
+
+.hover-info p {
+  margin: 5px 0;
+  font-size: 0.9em;
+  color: #555;
+}

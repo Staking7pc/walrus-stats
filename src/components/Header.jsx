@@ -12,7 +12,12 @@ export default function Header() {
         {/* Nav links (float-like behavior handled by flexbox) */}
         <li>
           <a className="active" href="/">
-            Home
+            Operators
+          </a>
+        </li>
+        <li>
+          <a className="active" href="/shard-owners">
+            Shards
           </a>
         </li>
       </ul>

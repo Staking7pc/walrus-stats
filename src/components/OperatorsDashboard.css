@@ -10,6 +10,33 @@
     transition: all 0.3s ease-in-out;
 }
 
+/* Add spacing below the header */
+.OperatorsDashboard-title {
+    margin-bottom: 40px; /* Adjust spacing as needed */
+}
+
+/* Constants container styling */
+.constants-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px; /* Additional spacing from header */
+}
+
+/* Individual constant box styling */
+.constant-box {
+    background: linear-gradient(145deg, #ffffff, #e3e6ea);
+    padding: 15px;
+    border-radius: 12px;
+    width: calc(25% - 10px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 200px;
+}
+
+
 /* Title styling */
 .OperatorsDashboard-title {
     text-align: center;
@@ -36,19 +63,20 @@
 .constants-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     gap: 15px;
     margin-bottom: 20px;
+    justify-content: center;
 }
 
 .constant-box {
     background: linear-gradient(145deg, #ffffff, #e3e6ea);
     padding: 15px;
-    border-radius: 8px;
-    width: calc(33.333% - 10px);
+    border-radius: 12px;
+    width: calc(25% - 10px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     transition: transform 0.2s, box-shadow 0.2s;
+    min-width: 200px;
 }
 
 .constant-box:hover {
@@ -71,10 +99,6 @@
     color: #333;
 }
 
-.last-updated{
-    text-align: center;
-    align-items: center;
-}
 /* Search box styling */
 .search-box {
     width: 100%;
@@ -144,43 +168,11 @@
 .data-table tbody tr.row-light-yellow {
     background-color: #FFFEE9;
 }
+
 .table-cell {
     padding: 10px;
     font-size: 14px;
     color: #555;
-}
-
-/* Remove bottom border from the last row */
-.data-table tbody tr:last-child {
-    border-bottom: none;
-}
-
-/* Loader styling */
-.loader {
-    margin: 20px auto;
-    border: 6px solid #f3f3f3;
-    border-top: 6px solid #007bff;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Error message styling */
-.error-message {
-    color: #ff4d4d;
-    font-size: 16px;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 /* Responsive styling */
