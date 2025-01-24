@@ -27,7 +27,7 @@ const ShardOwners = () => {
 
   // Define color mappings with improved palette
   const getColor = (owners) => {
-    if (owners === 1) return "#FFCDD2"; // Soft Pink
+    if (owners === 1) return "#99efe4"; // Soft Pink
     if (owners === 2) return "#FFF176"; // Soft Yellow
     if (owners === 3) return "#81C784"; // Soft Green
     if (owners === 4) return "#64B5F6"; // Soft Blue
@@ -104,7 +104,7 @@ const ShardOwners = () => {
       )}
 {/* 
       <div className="legend">
-        <span style={{ backgroundColor: "#FFCDD2" }}>1 Owner</span>
+        <span style={{ backgroundColor: "#99efe4" }}>1 Owner</span>
         <span style={{ backgroundColor: "#FFF176" }}>2 Owners</span>
         <span style={{ backgroundColor: "#81C784" }}>3 Owners</span>
         <span style={{ backgroundColor: "#64B5F6" }}>4 Owners</span>
