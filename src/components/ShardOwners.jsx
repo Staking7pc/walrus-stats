@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./ShardOwners.css";
-import Header from './Header';
+import Header from "./Header";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import "react-vertical-timeline-component/style.min.css";
+import { MdOutlineStorage } from "react-icons/md";
 
 const ShardOwners = () => {
   const [data, setData] = useState([]);
@@ -25,7 +31,6 @@ const ShardOwners = () => {
     fetchData();
   }, []);
 
-  // Define color mappings with improved palette
   const getColor = (owners) => {
     if (owners === 1) return "#99efe4"; // Soft Pink
     if (owners === 2) return "#FFF176"; // Soft Yellow
@@ -34,9 +39,11 @@ const ShardOwners = () => {
     return "#BA68C8"; // Soft Purple for 5+
   };
 
-  const handleSearch = () => {
-    const shardIdToFind = searchInput.trim();
+  const formatDate = (datetime) => {
+    return new Date(datetime).toLocaleDateString(); // Converts to date-only format
+  };
 
+  const handleSearch = (shardIdToFind) => {
     if (!shardIdToFind) {
       setSearchResult({ error: "Please enter a valid Shard ID!" });
       return;
@@ -45,6 +52,15 @@ const ShardOwners = () => {
     const result = data.find((item) => String(item.shardid) === shardIdToFind);
 
     setSearchResult(result || { error: "Shard not found!" });
+
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleBlockClick = (shardId) => {
+    // Automatically update the search box and perform the search
+    setSearchInput(shardId);
+    handleSearch(shardId);
   };
 
   const blocks = Array.from({ length: 1000 }, (_, index) => {
@@ -58,6 +74,7 @@ const ShardOwners = () => {
         style={{ backgroundColor: getColor(owners) }}
         onMouseEnter={() => setHoverInfo(item)}
         onMouseLeave={() => setHoverInfo(null)}
+        onClick={() => handleBlockClick(String(item.shardid))} // Click handler
       >
         {item && <span className="block-text">{item.shardid}</span>}
       </div>
@@ -66,7 +83,7 @@ const ShardOwners = () => {
 
   return (
     <div className="shard-owners-container">
-      <Header/>
+      <Header />
       <h1>Shard Details</h1>
 
       <div className="search-container">
@@ -76,7 +93,7 @@ const ShardOwners = () => {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
-        <button onClick={handleSearch}>Search</button>
+        <button onClick={() => handleSearch(searchInput)}>Search</button>
       </div>
 
       {searchResult && (
@@ -86,42 +103,70 @@ const ShardOwners = () => {
           ) : (
             <>
               <h2>Shard Details</h2>
-              <p><strong>Shard ID:</strong> {searchResult.shardid}</p>
-              <p><strong>Current Operator:</strong> {searchResult.networkaddress}</p>
-              <p><strong>Operator's Shards:</strong> {searchResult.nshards}</p>
-              <h3>Historic Operators list</h3>
-              <ul>
+              <p>
+                <strong>Shard ID:</strong> {searchResult.shardid}
+              </p>
+              <p>
+                <strong>Current Operator:</strong> {searchResult.networkaddress}
+              </p>
+              <p>
+                <strong>Operator's Shards:</strong> {searchResult.nshards}
+              </p>
+              <h3>Historic Operators Timeline</h3>
+              <VerticalTimeline lineColor="#007bff">
                 {searchResult.network_address_intervals.map((interval, index) => (
-                  <li key={index}>
-                    <strong>Time:</strong> {interval.start_time} - {interval.end_time} <br />
-                    <strong>Operator:</strong> {interval.networkaddress}
-                  </li>
+                  <VerticalTimelineElement
+                    key={index}
+                    date={`${formatDate(interval.start_time)} - ${formatDate(interval.end_time)}`}
+                    iconStyle={{
+                      background: "#007bff",
+                      color: "#fff",
+                      width: "30px",
+                      height: "30px", // Adjusted icon size
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontSize: "16px", // Adjusted font size
+                    }}
+                    contentStyle={{
+                      background: "white",
+                      boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
+                      borderLeft: "3px solid #007bff",
+                    }}
+                    contentArrowStyle={{ borderRight: "7px solid #007bff" }}
+                  >
+                    <h4
+                      className="vertical-timeline-element-title"
+                      style={{ marginBottom: "10px", color: "#333", fontSize: "16px" }}
+                    >
+                      Operator:
+                    </h4>
+                    <p style={{ margin: 0, color: "#555", fontSize: "14px" }}>
+                      {interval.networkaddress}
+                    </p>
+                  </VerticalTimelineElement>
                 ))}
-              </ul>
+              </VerticalTimeline>
             </>
           )}
         </div>
       )}
-{/* 
-      <div className="legend">
-        <span style={{ backgroundColor: "#99efe4" }}>1 Owner</span>
-        <span style={{ backgroundColor: "#FFF176" }}>2 Owners</span>
-        <span style={{ backgroundColor: "#81C784" }}>3 Owners</span>
-        <span style={{ backgroundColor: "#64B5F6" }}>4 Owners</span>
-        <span style={{ backgroundColor: "#BA68C8" }}>5+ Owners</span>
-      </div> */}
 
       <div className="blocks-grid">{blocks}</div>
 
       {hoverInfo && (
         <div className="hover-info">
-          <p><strong>Shard ID:</strong> {hoverInfo.shardid}</p>
-          <p><strong>Network Address:</strong> {hoverInfo.networkaddress}</p>
+          <p>
+            <strong>Shard ID:</strong> {hoverInfo.shardid}
+          </p>
+          <p>
+            <strong>Network Address:</strong> {hoverInfo.networkaddress}
+          </p>
           <h3>Historic Operators</h3>
           <ul>
             {hoverInfo.network_address_intervals.map((interval, index) => (
               <li key={index}>
-                <strong>Time:</strong> {interval.start_time} - {interval.end_time} <br />
+                <strong>Time:</strong> {formatDate(interval.start_time)} - {formatDate(interval.end_time)} <br />
                 <strong>Network Address:</strong> {interval.networkaddress}
               </li>
             ))}

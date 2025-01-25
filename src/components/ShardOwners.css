@@ -138,3 +138,27 @@ h1 {
   font-size: 0.9em;
   color: #555;
 }
+
+.vertical-timeline-element-title {
+  font-weight: bold;
+  color: #333;
+}
+
+.vertical-timeline-element-date {
+  font-size: 12px; /* Smaller font size for dates */
+  word-wrap: break-word; /* Prevent text overflow */
+}
+
+@media (max-width: 768px) {
+  .vertical-timeline-element-content {
+    text-align: center; /* Center-align text for small screens */
+  }
+
+  .vertical-timeline-element-date {
+    font-size: 10px; /* Further reduce font size for dates on mobile */
+  }
+
+  .vertical-timeline-element-title {
+    font-size: 14px; /* Adjust title font size for better readability */
+  }
+}
