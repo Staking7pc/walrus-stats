@@ -81,6 +81,13 @@ const ShardOwners = () => {
     );
   });
 
+  const getShardsForNetwork = (networkAddress) => {
+    // Filter the data to get all shards associated with the given network address
+    return data
+      .filter((item) => item.networkaddress === networkAddress)
+      .map((item) => item.shardid);
+  };
+
   return (
     <div className="shard-owners-container">
       <Header />
@@ -112,6 +119,17 @@ const ShardOwners = () => {
               <p>
                 <strong>Operator's Shards:</strong> {searchResult.nshards}
               </p>
+
+              {/* Display all shards associated with the current network address */}
+              <h3>Shards Held by This Operator</h3>
+              <div className="operator-shards">
+                {getShardsForNetwork(searchResult.networkaddress).map((shardId) => (
+                  <span key={shardId} className="shard-badge">
+                    {shardId}
+                  </span>
+                ))}
+              </div>
+
               <h3>Historic Operators Timeline</h3>
               <VerticalTimeline lineColor="#007bff">
                 {searchResult.network_address_intervals.map((interval, index) => (

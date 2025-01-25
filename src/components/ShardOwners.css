@@ -162,3 +162,22 @@ h1 {
     font-size: 14px; /* Adjust title font size for better readability */
   }
 }
+.operator-shards {
+  margin: 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shard-badge {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.shard-badge:hover {
+  background-color: #0056b3;
+  cursor: pointer;
+}
