@@ -21,7 +21,9 @@ const ShardOwners = () => {
           "https://walrus.brightlystake.com/api/shard-info"
         );
         const result = await response.json();
-        const sortedData = result.sort((a, b) => Number(a.shardid) - Number(b.shardid));
+        const sortedData = result.sort(
+          (a, b) => Number(a.shardid) - Number(b.shardid)
+        );
         setData(sortedData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -32,15 +34,15 @@ const ShardOwners = () => {
   }, []);
 
   const getColor = (owners) => {
-    if (owners === 1) return "#99efe4"; // Soft Pink
-    if (owners === 2) return "#FFF176"; // Soft Yellow
-    if (owners === 3) return "#81C784"; // Soft Green
-    if (owners === 4) return "#64B5F6"; // Soft Blue
-    return "#BA68C8"; // Soft Purple for 5+
+    if (owners === 1) return "#99efe4";
+    if (owners === 2) return "#FFF176";
+    if (owners === 3) return "#81C784";
+    if (owners === 4) return "#64B5F6";
+    return "#BA68C8";
   };
 
   const formatDate = (datetime) => {
-    return new Date(datetime).toLocaleDateString(); // Converts to date-only format
+    return new Date(datetime).toLocaleDateString();
   };
 
   const handleSearch = (shardIdToFind) => {
@@ -52,19 +54,16 @@ const ShardOwners = () => {
     const result = data.find((item) => String(item.shardid) === shardIdToFind);
 
     setSearchResult(result || { error: "Shard not found!" });
-
-    // Scroll to the top of the page
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleBlockClick = (shardId) => {
-    // Automatically update the search box and perform the search
     setSearchInput(shardId);
     handleSearch(shardId);
   };
 
   const blocks = Array.from({ length: 1000 }, (_, index) => {
-    const item = data[index % data.length]; // Repeat data if less than 1000 entries
+    const item = data[index % data.length];
     const owners = item?.owners || 0;
 
     return (
@@ -74,7 +73,7 @@ const ShardOwners = () => {
         style={{ backgroundColor: getColor(owners) }}
         onMouseEnter={() => setHoverInfo(item)}
         onMouseLeave={() => setHoverInfo(null)}
-        onClick={() => handleBlockClick(String(item.shardid))} // Click handler
+        onClick={() => handleBlockClick(String(item.shardid))}
       >
         {item && <span className="block-text">{item.shardid}</span>}
       </div>
@@ -82,7 +81,6 @@ const ShardOwners = () => {
   });
 
   const getShardsForNetwork = (networkAddress) => {
-    // Filter the data to get all shards associated with the given network address
     return data
       .filter((item) => item.networkaddress === networkAddress)
       .map((item) => item.shardid);
@@ -120,50 +118,55 @@ const ShardOwners = () => {
                 <strong>Operator's Shards:</strong> {searchResult.nshards}
               </p>
 
-              {/* Display all shards associated with the current network address */}
               <h3>Shards Held by This Operator</h3>
               <div className="operator-shards">
-                {getShardsForNetwork(searchResult.networkaddress).map((shardId) => (
-                  <span key={shardId} className="shard-badge">
-                    {shardId}
-                  </span>
-                ))}
+                {getShardsForNetwork(searchResult.networkaddress).map(
+                  (shardId) => (
+                    <span key={shardId} className="shard-badge">
+                      {shardId}
+                    </span>
+                  )
+                )}
               </div>
 
               <h3>Historic Operators Timeline</h3>
-              <VerticalTimeline lineColor="#007bff">
-                {searchResult.network_address_intervals.map((interval, index) => (
-                  <VerticalTimelineElement
-                    key={index}
-                    date={`${formatDate(interval.start_time)} - ${formatDate(interval.end_time)}`}
-                    iconStyle={{
-                      background: "#007bff",
-                      color: "#fff",
-                      width: "30px",
-                      height: "30px", // Adjusted icon size
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "16px", // Adjusted font size
-                    }}
-                    contentStyle={{
-                      background: "white",
-                      boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
-                      borderLeft: "3px solid #007bff",
-                    }}
-                    contentArrowStyle={{ borderRight: "7px solid #007bff" }}
-                  >
-                    <h4
-                      className="vertical-timeline-element-title"
-                      style={{ marginBottom: "10px", color: "#333", fontSize: "16px" }}
+              <VerticalTimeline lineColor="#007bff" layout="1-column-left">
+                {searchResult.network_address_intervals
+                  .sort(
+                    (a, b) => new Date(b.start_time) - new Date(a.start_time)
+                  )
+                  .map((interval, index) => (
+                    <VerticalTimelineElement
+                      key={index}
+                      className="vertical-timeline-element"
+                      contentStyle={{
+                        background: "#f3f3f3",
+                        boxShadow: "none",
+                        border: "1px solid #d4d4d4",
+                        borderRadius: "8px",
+                        padding: "15px",
+                      }}
+                      contentArrowStyle={{ display: "none" }}
+                      date={`${formatDate(interval.start_time)} - ${formatDate(
+                        interval.end_time
+                      )}`}
+                      iconStyle={{
+                        background: "#007bff",
+                        color: "#fff",
+                        width: "24px",
+                        height: "24px",
+                        marginLeft: "-12px",
+                      }}
+                      icon={<MdOutlineStorage />}
                     >
-                      Operator:
-                    </h4>
-                    <p style={{ margin: 0, color: "#555", fontSize: "14px" }}>
-                      {interval.networkaddress}
-                    </p>
-                  </VerticalTimelineElement>
-                ))}
+                      <h4 className="vertical-timeline-element-title">
+                        Operator:
+                      </h4>
+                      <p className="vertical-timeline-element-subtitle">
+                        {interval.networkaddress}
+                      </p>
+                    </VerticalTimelineElement>
+                  ))}
               </VerticalTimeline>
             </>
           )}
@@ -184,7 +187,8 @@ const ShardOwners = () => {
           <ul>
             {hoverInfo.network_address_intervals.map((interval, index) => (
               <li key={index}>
-                <strong>Time:</strong> {formatDate(interval.start_time)} - {formatDate(interval.end_time)} <br />
+                <strong>Time:</strong> {formatDate(interval.start_time)} -{" "}
+                {formatDate(interval.end_time)} <br />
                 <strong>Network Address:</strong> {interval.networkaddress}
               </li>
             ))}

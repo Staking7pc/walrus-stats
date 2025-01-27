@@ -1,4 +1,3 @@
-/* General container styles */
 .shard-owners-container {
   font-family: 'Arial', sans-serif;
   padding: 20px;
@@ -7,14 +6,12 @@
   min-height: 100vh;
 }
 
-/* Title */
 h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
   color: #333;
 }
 
-/* Search bar */
 .search-container {
   margin-bottom: 20px;
   display: flex;
@@ -44,7 +41,6 @@ h1 {
   background-color: #0056b3;
 }
 
-/* Search result */
 .search-result {
   margin: 20px auto;
   padding: 20px;
@@ -67,31 +63,6 @@ h1 {
   color: #555;
 }
 
-/* Legend */
-.legend {
-  margin: 20px 0;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-.legend span {
-  padding: 5px 10px;
-  font-size: 1em;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  color: #ffffff;
-  font-weight: bold;
-  display: inline-block;
-}
-
-.legend span:nth-child(1) { background-color: #FFCCCB; }
-.legend span:nth-child(2) { background-color: #FFD700; }
-.legend span:nth-child(3) { background-color: #ADFF2F; }
-.legend span:nth-child(4) { background-color: #1E90FF; }
-.legend span:nth-child(5) { background-color: #800080; }
-
-/* Blocks grid */
 .blocks-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
@@ -107,6 +78,7 @@ h1 {
   border-radius: 3px;
   position: relative;
   border: 1px solid #ddd;
+  cursor: pointer;
 }
 
 .block-text {
@@ -119,7 +91,6 @@ h1 {
   pointer-events: none;
 }
 
-/* Hover info */
 .hover-info {
   position: fixed;
   bottom: 20px;
@@ -139,29 +110,6 @@ h1 {
   color: #555;
 }
 
-.vertical-timeline-element-title {
-  font-weight: bold;
-  color: #333;
-}
-
-.vertical-timeline-element-date {
-  font-size: 12px; /* Smaller font size for dates */
-  word-wrap: break-word; /* Prevent text overflow */
-}
-
-@media (max-width: 768px) {
-  .vertical-timeline-element-content {
-    text-align: center; /* Center-align text for small screens */
-  }
-
-  .vertical-timeline-element-date {
-    font-size: 10px; /* Further reduce font size for dates on mobile */
-  }
-
-  .vertical-timeline-element-title {
-    font-size: 14px; /* Adjust title font size for better readability */
-  }
-}
 .operator-shards {
   margin: 10px 0;
   display: flex;
@@ -175,9 +123,87 @@ h1 {
   padding: 5px 10px;
   border-radius: 20px;
   font-size: 12px;
+  cursor: pointer;
 }
 
 .shard-badge:hover {
   background-color: #0056b3;
-  cursor: pointer;
+}
+
+.vertical-timeline-element {
+  margin: 2em 0;
+}
+
+.vertical-timeline-element-content {
+  margin-left: 40px;
+  padding: 1em;
+  background: #f3f3f3;
+  box-shadow: none;
+  border: 1px solid #d4d4d4;
+  border-radius: 8px;
+}
+
+.vertical-timeline-element-content .vertical-timeline-element-date {
+  float: left;
+  padding: .8em 0;
+  opacity: .7;
+  margin-left: 10px;
+  font-size: 0.85em;
+}
+
+.vertical-timeline-element-content::before {
+  display: none;
+}
+
+.vertical-timeline-element-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px #fff, inset 0 2px 0 rgba(0,0,0,.08), 0 3px 0 4px rgba(0,0,0,.05);
+}
+
+.vertical-timeline-element-subtitle {
+  word-break: break-all;
+}
+
+@media only screen and (max-width: 1169px) {
+  .vertical-timeline-element-content .vertical-timeline-element-date {
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .search-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .search-container input,
+  .search-container button {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .blocks-grid {
+    grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+  }
+
+  .block {
+    width: 20px;
+    height: 20px;
+  }
+
+  .block-text {
+    font-size: 8px;
+  }
+
+  .hover-info {
+    width: 80%;
+    left: 10%;
+    right: 10%;
+  }
 }
