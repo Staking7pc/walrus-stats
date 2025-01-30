@@ -48,7 +48,7 @@ const OperatorStats = () => {
     };
 
     fetchHistoricData();
-  }, [id, operatorData]);
+  }, [id, operatorData, timeRange]);
 
   useEffect(() => {
     setFilteredData(historicData.slice(0, timeRange));
@@ -147,42 +147,51 @@ const OperatorStats = () => {
           </div>
         )}
 
+        {/* Operator Status */}
         <div className="OperatorStats-section">
           <h2>Operator Status</h2>
-          <div className="OperatorStats-blocks-container">
-            {filteredData.map((record, index) => (
-              <div
-                key={index}
-                className={`OperatorStats-block ${
-                  record.node_status === 'Active' ? 'green' : record.node_status === 'NA' ? 'grey' : 'red'
-                }`}
-                onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
-                onMouseLeave={handleMouseLeave}
-              ></div>
-            ))}
-          </div>
-        </div>
-
-        <div className="OperatorStats-section">
-          <h2>Event Pending</h2>
-          <div className="OperatorStats-blocks-container">
-            {filteredData.map((record, index) => {
-              let color = 'green';
-              if (record.event_pending === 'NA') color = 'grey';
-              else if (record.event_pending > 200) color = 'red';
-              else if (record.event_pending > 0) color = 'yellow';
-              return (
+          <div className="OperatorStats-blocks-scrollable">
+            <div className="OperatorStats-blocks-container">
+              {filteredData.map((record, index) => (
                 <div
                   key={index}
-                  className={`OperatorStats-block ${color}`}
-                  onMouseEnter={(e) => handleMouseEnter(e, record.event_pending, record.timestamp)}
+                  className={`OperatorStats-block ${
+                    record.node_status === 'Active' ? 'green' :
+                      record.node_status === 'NA' ? 'grey' : 'red'
+                  }`}
+                  onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
                   onMouseLeave={handleMouseLeave}
                 ></div>
-              );
-            })}
+              ))}
+            </div>
           </div>
         </div>
 
+        {/* Event Pending */}
+        <div className="OperatorStats-section">
+          <h2>Event Pending</h2>
+          <div className="OperatorStats-blocks-scrollable">
+            <div className="OperatorStats-blocks-container">
+              {filteredData.map((record, index) => {
+                let color = 'green';
+                if (record.event_pending === 'NA') color = 'grey';
+                else if (record.event_pending > 200) color = 'red';
+                else if (record.event_pending > 0) color = 'yellow';
+
+                return (
+                  <div
+                    key={index}
+                    className={`OperatorStats-block ${color}`}
+                    onMouseEnter={(e) => handleMouseEnter(e, record.event_pending, record.timestamp)}
+                    onMouseLeave={handleMouseLeave}
+                  ></div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Shards - Owned/Ready */}
         <div className="OperatorStats-section">
           <h2>Shards - Owned/Ready</h2>
           <div className="OperatorStats-graph-container">

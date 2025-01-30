@@ -4,8 +4,8 @@ import './index.css';
 import OperatorsDashboard from './components/OperatorsDashboard';
 import OperatorStats from "./components/OperatorStats";
 import ShardOwners from "./components/ShardOwners";
-
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import BlobSearch from './components/BlobSearch';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -17,6 +17,8 @@ root.render(
         <Route path="/operators-dashboard" element={<OperatorsDashboard/>} />
         <Route path="/operator-stats/:endpoint" element={<OperatorStats/>} />
         <Route path="/shard-owners" element={<ShardOwners/>} />
+        <Route path="/blob-search" element={<BlobSearch/>} />
+
       </Routes>
     </React.Fragment>
   </Router>

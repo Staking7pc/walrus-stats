@@ -1,0 +1,65 @@
+/* Container styles */
+.blob-search-container {
+    padding: 2rem;
+    font-family: sans-serif;
+  }
+  
+  /* Input group */
+  .blob-search-input-group {
+    margin-bottom: 1rem;
+  }
+  
+  /* Text input */
+  .blob-search-input {
+    width: 300px;
+    padding: 0.5rem;
+  }
+  
+  /* Button */
+  .blob-search-button {
+    margin-left: 0.5rem;
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+  }
+  
+  /* Error text */
+  .blob-search-error {
+    color: red;
+  }
+  
+  /* Card wrapper */
+  .blob-search-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  /* Each card block */
+  .blob-search-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 150px;
+    background-color: #fefefe;
+  }
+  
+  /* Deletable styling */
+  .blob-search-deletable-true {
+    background-color: lightgreen;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  .blob-search-deletable-false {
+    background-color: lightcoral;
+    padding: 0.5rem;
+    border-radius: 4px;
+    text-align: center;
+  }
+  
+  /* Sender text (in case you want wrapping) */
+  .blob-search-sender {
+    word-wrap: break-word;
+  }
+  
