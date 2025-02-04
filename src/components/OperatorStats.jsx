@@ -27,6 +27,7 @@ const OperatorStats = () => {
   const [timeRange, setTimeRange] = useState(144);
 
   const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, value: '', time: '' });
+  const [showGreen, setShowGreen] = useState(true);
 
   useEffect(() => {
     const fetchHistoricData = async () => {
@@ -117,24 +118,48 @@ const OperatorStats = () => {
     },
   };
 
+  const getNodeStatusColor = (status) => {
+    if (status === 'Active') return 'green';
+    if (status === 'NA') return 'grey';
+    return 'red';
+  };
+
+  const getEventPendingColor = (eventPendingValue) => {
+    if (eventPendingValue === 'NA') return 'grey';
+    if (eventPendingValue > 200) return 'red';
+    if (eventPendingValue > 0) return 'yellow';
+    return 'green';
+  };
+
   return (
     <div className="OperatorStats-wrapper">
       <div className="OperatorStats-container">
-        <Header/>
-        <h3 className="OperatorStats-title">Historic Stats for {operatorData?.endpoint}</h3>
+        <Header />
+        <h3 className="OperatorStats-title">
+          Historic Stats for {operatorData?.endpoint}
+        </h3>
 
-        <div className="OperatorStats-time-range-selector">
-          <label htmlFor="timeRange">Select Time Range: </label>
-          <select
-            id="timeRange"
-            value={timeRange}
-            onChange={(e) => setTimeRange(Number(e.target.value))}
-          >
-            <option value={144}>1 Day</option>
-            <option value={288}>2 Days</option>
-            <option value={720}>5 Days</option>
-            <option value={4320}>1 Month</option>
-          </select>
+        {/* Time Range + Toggle Controls */}
+        <div className="OperatorStats-controls">
+          <div className="OperatorStats-time-range-selector">
+            <label htmlFor="timeRange">Select Time Range: </label>
+            <select
+              id="timeRange"
+              value={timeRange}
+              onChange={(e) => setTimeRange(Number(e.target.value))}
+            >
+              <option value={144}>1 Day</option>
+              <option value={288}>2 Days</option>
+              <option value={720}>5 Days</option>
+              <option value={4320}>1 Month</option>
+            </select>
+          </div>
+
+          <div className="OperatorStats-toggle-green">
+            <button onClick={() => setShowGreen((prev) => !prev)}>
+              {showGreen ? 'Hide Green Boxes' : 'Show Green Boxes'}
+            </button>
+          </div>
         </div>
 
         {tooltip.visible && (
@@ -152,17 +177,25 @@ const OperatorStats = () => {
           <h2>Operator Status</h2>
           <div className="OperatorStats-blocks-scrollable">
             <div className="OperatorStats-blocks-container">
-              {filteredData.map((record, index) => (
-                <div
-                  key={index}
-                  className={`OperatorStats-block ${
-                    record.node_status === 'Active' ? 'green' :
-                      record.node_status === 'NA' ? 'grey' : 'red'
-                  }`}
-                  onMouseEnter={(e) => handleMouseEnter(e, record.node_status, record.timestamp)}
-                  onMouseLeave={handleMouseLeave}
-                ></div>
-              ))}
+              {filteredData
+                .filter((record) => {
+                  const color = getNodeStatusColor(record.node_status);
+                  if (!showGreen && color === 'green') return false;
+                  return true;
+                })
+                .map((record, index) => {
+                  const color = getNodeStatusColor(record.node_status);
+                  return (
+                    <div
+                      key={index}
+                      className={`OperatorStats-block ${color}`}
+                      onMouseEnter={(e) =>
+                        handleMouseEnter(e, record.node_status, record.timestamp)
+                      }
+                      onMouseLeave={handleMouseLeave}
+                    ></div>
+                  );
+                })}
             </div>
           </div>
         </div>
@@ -172,21 +205,25 @@ const OperatorStats = () => {
           <h2>Event Pending</h2>
           <div className="OperatorStats-blocks-scrollable">
             <div className="OperatorStats-blocks-container">
-              {filteredData.map((record, index) => {
-                let color = 'green';
-                if (record.event_pending === 'NA') color = 'grey';
-                else if (record.event_pending > 200) color = 'red';
-                else if (record.event_pending > 0) color = 'yellow';
-
-                return (
-                  <div
-                    key={index}
-                    className={`OperatorStats-block ${color}`}
-                    onMouseEnter={(e) => handleMouseEnter(e, record.event_pending, record.timestamp)}
-                    onMouseLeave={handleMouseLeave}
-                  ></div>
-                );
-              })}
+              {filteredData
+                .filter((record) => {
+                  const color = getEventPendingColor(record.event_pending);
+                  if (!showGreen && color === 'green') return false;
+                  return true;
+                })
+                .map((record, index) => {
+                  const color = getEventPendingColor(record.event_pending);
+                  return (
+                    <div
+                      key={index}
+                      className={`OperatorStats-block ${color}`}
+                      onMouseEnter={(e) =>
+                        handleMouseEnter(e, record.event_pending, record.timestamp)
+                      }
+                      onMouseLeave={handleMouseLeave}
+                    ></div>
+                  );
+                })}
             </div>
           </div>
         </div>

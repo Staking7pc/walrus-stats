@@ -1,3 +1,4 @@
+/* Container around everything */
 .OperatorStats-wrapper .OperatorStats-container {
   font-family: 'Roboto', Arial, sans-serif;
   padding: 20px;
@@ -14,13 +15,39 @@
   font-size: 24px;
   font-weight: 700;
   color: #333;
+
+  /* Make long domain names or text wrap properly */
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word; /* or 'break-all', if you prefer more aggressive line breaks */
+  white-space: normal;    /* ensures text can break to a new line */
+  max-width: 100%;        /* ensures it doesn’t exceed container width */
 }
 
-.OperatorStats-wrapper .OperatorStats-time-range-selector {
-  margin-bottom: 20px;
+/* =========================
+   TIME RANGE + TOGGLE CONTROLS
+   ========================= */
+.OperatorStats-controls {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center; /* Centers horizontally by default */
+  gap: 1rem;               /* Space between the time-range selector and button */
+  margin-bottom: 1rem;
+  flex-wrap: wrap;         /* Allows wrapping on small screens */
+}
+
+.OperatorStats-time-range-selector,
+.OperatorStats-toggle-green {
+  display: flex;
+  align-items: center;
+}
+
+.OperatorStats-time-range-selector label {
+  margin-right: 0.5rem; /* Space between label and dropdown */
+}
+
+/* Time range select box */
+.OperatorStats-wrapper .OperatorStats-time-range-selector {
   gap: 10px;
 }
 
@@ -33,6 +60,45 @@
   cursor: pointer;
 }
 
+/* Toggle Green button */
+.OperatorStats-toggle-green button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  height: fit-content;
+  padding: 10px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 14px;
+}
+
+.OperatorStats-toggle-green button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}
+
+/* =========================
+   RESPONSIVE BEHAVIOR
+   ========================= */
+@media (max-width: 768px) {
+  /* For tablets / medium screens, 
+     you can adjust if you want them on separate lines */
+  .OperatorStats-controls {
+    justify-content: center;
+  }
+}
+
+/* For very small screens, we can stack them or further reduce spacing */
+@media (max-width: 480px) {
+  /* Stack controls vertically if desired: */
+  .OperatorStats-controls {
+    flex-direction: column;
+  }
+}
+
+/* =========================
+   LOADER / ERROR
+   ========================= */
 .OperatorStats-loader {
   text-align: center;
   font-size: 18px;
@@ -46,17 +112,37 @@
   margin-top: 50px;
 }
 
+/* =========================
+   CONTENT SECTIONS
+   ========================= */
 .OperatorStats-section {
   margin-bottom: 20px;
 }
 
-/* Scrollable container for blocks */
+/* =========================
+   BLOCKS SCROLLABLE
+   ========================= */
 .OperatorStats-blocks-scrollable {
-  max-height: 300px; /* Adjust height as needed */
-  overflow-y: auto;
+  max-height: 200px;          /* Or the height that makes sense for you */
+  overflow-y: scroll;         /* Always show vertical scrollbar */
+  scrollbar-gutter: stable;   /* Modern CSS that reserves space for the scrollbar */
+  padding: 8px 0;
   margin-top: 10px;
 }
 
+/* Optional: stylize the scrollbar (Chrome/Edge/Safari) */
+.OperatorStats-blocks-scrollable::-webkit-scrollbar {
+  width: 8px; /* scrollbar width */
+}
+.OperatorStats-blocks-scrollable::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+.OperatorStats-blocks-scrollable::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Grid layout for the colored blocks */
 .OperatorStats-wrapper .OperatorStats-blocks-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
@@ -77,24 +163,23 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-/* Balanced colors */
+/* Balanced colors for blocks */
 .OperatorStats-wrapper .OperatorStats-block.green {
   background-color: #78c78b;
 }
-
 .OperatorStats-wrapper .OperatorStats-block.yellow {
   background-color: #f8d568;
 }
-
 .OperatorStats-wrapper .OperatorStats-block.red {
   background-color: #e87474;
 }
-
 .OperatorStats-wrapper .OperatorStats-block.grey {
   background-color: #bfbfbf;
 }
 
-/* Tooltip Styling */
+/* =========================
+   TOOLTIP
+   ========================= */
 .OperatorStats-wrapper .OperatorStats-tooltip {
   position: absolute;
   background: rgba(0, 0, 0, 0.85);
@@ -108,13 +193,17 @@
   pointer-events: none;
 }
 
-/* Graph container */
+/* =========================
+   GRAPH CONTAINER
+   ========================= */
 .OperatorStats-graph-container {
   height: 300px; /* Adjust as needed to give space for the chart */
   width: 100%;
 }
 
-/* Responsive Design */
+/* =========================
+   FURTHER MEDIA QUERIES
+   ========================= */
 @media (max-width: 768px) {
   .OperatorStats-wrapper .OperatorStats-block {
     width: 15px;
@@ -123,8 +212,14 @@
 }
 
 @media (max-width: 480px) {
+  /* Make the blocks smaller on tiny screens */
   .OperatorStats-wrapper .OperatorStats-block {
     width: 12px;
     height: 12px;
+  }
+
+  /* Optionally reduce chart height on very small screens */
+  .OperatorStats-graph-container {
+    height: 200px;
   }
 }
