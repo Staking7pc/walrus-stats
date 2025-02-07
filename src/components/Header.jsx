@@ -20,6 +20,11 @@ export default function Header() {
             Shards
           </a>
         </li>
+        <li>
+          <a className="active" href="/shard-health">
+            Health
+          </a>
+        </li>
       </ul>
     </header>
   );
