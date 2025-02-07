@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 
 import Header from './Header';
-import './ShardHealth.css'; // <-- Our own CSS, similar approach to OperatorStats.css
+import './ShardHealth.css'; // Plain CSS, similar in approach to OperatorStats.css
 
 ChartJS.register(
   CategoryScale,
@@ -32,9 +32,10 @@ function ShardHealth() {
 
   // Fetch data once
   useEffect(() => {
-    fetch('https://walrus.brightlystake.com/api/shard-health')
+    fetch('https://walrus.brightlystake.com/api/shard-health-v2')
       .then((res) => res.json())
       .then((data) => {
+        // Sort by ascending timestamp
         data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         setShardData(data);
       })
@@ -47,16 +48,12 @@ function ShardHealth() {
     const itemTime = new Date(item.timestamp);
     switch (selectedRange) {
       case '1D':
-        // Last 24 hours
         return now - itemTime <= 24 * 60 * 60 * 1000;
       case '5D':
-        // Last 5 days
         return now - itemTime <= 5 * 24 * 60 * 60 * 1000;
       case '10D':
-        // Last 10 days
         return now - itemTime <= 10 * 24 * 60 * 60 * 1000;
       case '1M':
-        // Last 30 days
         return now - itemTime <= 30 * 24 * 60 * 60 * 1000;
       default:
         return true;
@@ -68,16 +65,73 @@ function ShardHealth() {
     new Date(item.timestamp).toLocaleDateString()
   );
 
-  // Shard data arrays
+  // ------------------------------------------------
+  // TOP CHART: Node States Over Time
+  // ------------------------------------------------
+  const activeCounts = filteredData.map((d) => d.active_count);
+  const naCounts = filteredData.map((d) => d.na_count);
+  const recoverMetadataCounts = filteredData.map((d) => d.recovermetadata_count);
+  const recoveryCatchupCounts = filteredData.map((d) => d.recoverycatchup_count);
+  const recoveryInProgressCounts = filteredData.map((d) => d.recoveryinprogress_count);
+  const standbyCounts = filteredData.map((d) => d.standby_count);
+
+  const nodeStatesChartData = {
+    labels,
+    datasets: [
+      {
+        label: 'Active',
+        data: activeCounts,
+        borderColor: 'rgba(40, 167, 69, 0.8)', // green-ish
+        backgroundColor: 'rgba(40, 167, 69, 0.2)',
+        fill: false,
+      },
+      {
+        label: 'NA',
+        data: naCounts,
+        borderColor: 'rgba(108, 117, 125, 0.8)', // grayish
+        backgroundColor: 'rgba(108, 117, 125, 0.2)',
+        fill: false,
+      },
+      {
+        label: 'Recovering Metadata',
+        data: recoverMetadataCounts,
+        borderColor: 'rgba(255, 99, 132, 0.8)', // pinkish
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: false,
+      },
+      {
+        label: 'Recovery Catchup',
+        data: recoveryCatchupCounts,
+        borderColor: 'rgba(255, 159, 64, 0.8)', // orange
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        fill: false,
+      },
+      {
+        label: 'Recovery In Progress',
+        data: recoveryInProgressCounts,
+        borderColor: 'rgba(54, 162, 235, 0.8)', // bluish
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: false,
+      },
+      {
+        label: 'Standby',
+        data: standbyCounts,
+        borderColor: 'rgba(153, 102, 255, 0.8)', // purple
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        fill: false,
+      },
+    ],
+  };
+
+  // ------------------------------------------------
+  // BOTTOM CHART: Shard Health Over Time
+  // ------------------------------------------------
   const redShards = filteredData.map((d) => d.redshards);
   const greenShards = filteredData.map((d) => d.greenshards);
   const yellowShards = filteredData.map((d) => d.yellowshards);
-
-  // Threshold line at 667
   const thresholdData = filteredData.map(() => 667);
 
-  // Chart.js data
-  const chartData = {
+  const shardChartData = {
     labels,
     datasets: [
       {
@@ -90,7 +144,7 @@ function ShardHealth() {
       {
         label: 'Green Shards',
         data: greenShards,
-        borderColor: 'rgba(40, 167, 69, 0.8)',
+        borderColor: 'rgba(40, 167, 69, 1)',
         backgroundColor: 'rgba(40, 167, 69, 0.2)',
         fill: true,
       },
@@ -113,10 +167,10 @@ function ShardHealth() {
     ],
   };
 
-  // Chart.js options
-  const chartOptions = {
+  // Common chart options (title changes below)
+  const commonChartOptions = {
     responsive: true,
-    maintainAspectRatio: false, // Let it fill the container
+    maintainAspectRatio: false, // fill container
     scales: {
       x: {
         grid: { display: false },
@@ -130,25 +184,18 @@ function ShardHealth() {
         beginAtZero: true,
         title: {
           display: true,
-          text: 'Number of Shards',
+          text: 'Count',
         },
       },
     },
     plugins: {
-      legend: {
-        display: true,
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'Shard Health Over Time',
-      },
+      legend: { position: 'top' },
       tooltip: {
         callbacks: {
           title: (tooltipItems) => {
-            // Show full date/time in tooltip
             const idx = tooltipItems[0].dataIndex;
             const item = filteredData[idx];
+            // Show full date/time in tooltip
             return new Date(item.timestamp).toLocaleString();
           },
           label: (context) => {
@@ -161,7 +208,31 @@ function ShardHealth() {
     },
   };
 
-  // Helper to mark active button
+  // Modify top chart title
+  const nodeStatesOptions = {
+    ...commonChartOptions,
+    plugins: {
+      ...commonChartOptions.plugins,
+      title: {
+        display: true,
+        text: 'Node States Over Time',
+      },
+    },
+  };
+
+  // Modify bottom chart title
+  const shardChartOptions = {
+    ...commonChartOptions,
+    plugins: {
+      ...commonChartOptions.plugins,
+      title: {
+        display: true,
+        text: 'Shard Health Over Time',
+      },
+    },
+  };
+
+  // Helper to highlight active button
   const getButtonClass = (range) => {
     return selectedRange === range
       ? 'ShardHealth-button ShardHealth-button-active'
@@ -175,7 +246,7 @@ function ShardHealth() {
       <div className="ShardHealth-container">
         <h2 className="ShardHealth-title">Shard Health</h2>
 
-        {/* Time-range buttons */}
+        {/* Time-range buttons (control BOTH charts) */}
         <div className="ShardHealth-timeRange">
           <button className={getButtonClass('1D')} onClick={() => setSelectedRange('1D')}>
             1 Day
@@ -191,9 +262,14 @@ function ShardHealth() {
           </button>
         </div>
 
-        {/* Chart container (fixed height for consistent layout) */}
+        {/* 1) Node States Chart (Top) */}
         <div className="ShardHealth-chart">
-          <Line data={chartData} options={chartOptions} />
+          <Line data={nodeStatesChartData} options={nodeStatesOptions} />
+        </div>
+
+        {/* 2) Shard Health Chart (Bottom) */}
+        <div className="ShardHealth-chart">
+          <Line data={shardChartData} options={shardChartOptions} />
         </div>
 
         {/* Explanation Section */}
@@ -211,7 +287,7 @@ function ShardHealth() {
           <p>
             <strong style={{ color: 'green' }}>Green Shards</strong>: All good!
             The shard is healthy, fully operational (node_status = "Active" AND
-            event_pending Less than 2000).
+            event_pending &lt; 2000).
           </p>
         </div>
       </div>
