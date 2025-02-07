@@ -1,3 +1,5 @@
+// ShardHealth.jsx
+
 import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import {
@@ -28,16 +30,19 @@ function ShardHealth() {
   const [shardData, setShardData] = useState([]);
   const [selectedRange, setSelectedRange] = useState("1D");
 
+  // Fetch data once on mount
   useEffect(() => {
     fetch("https://walrus.brightlystake.com/api/shard-health")
       .then((res) => res.json())
       .then((data) => {
+        // Sort by ascending timestamp
         data.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
         setShardData(data);
       })
       .catch((err) => console.error("Error fetching shard data:", err));
   }, []);
 
+  // Filter data based on selected range
   const now = new Date();
   const filteredData = shardData.filter((item) => {
     const itemTime = new Date(item.timestamp);
@@ -55,14 +60,20 @@ function ShardHealth() {
     }
   });
 
-  // We'll still use an index-based label for the x-axis,
-  // but hide it from display and use the real date in the tooltip.
-  const labels = filteredData.map((_, i) => i + 1);
+  // X-axis labels as short dates
+  const labels = filteredData.map((item) =>
+    new Date(item.timestamp).toLocaleDateString()
+  );
 
+  // Shard values
   const redShards = filteredData.map((d) => d.redshards);
   const greenShards = filteredData.map((d) => d.greenshards);
   const yellowShards = filteredData.map((d) => d.yellowshards);
 
+  // Threshold line at y=667
+  const thresholdData = filteredData.map(() => 667);
+
+  // Prepare chart datasets
   const chartData = {
     labels,
     datasets: [
@@ -86,16 +97,31 @@ function ShardHealth() {
         borderColor: "rgba(255,206,86,1)",
         backgroundColor: "rgba(255,206,86,0.2)",
         fill: true
+      },
+      {
+        label: "Threshold",
+        data: thresholdData,
+        borderColor: "rgba(0,0,0,0.6)",
+        borderDash: [6, 6],
+        fill: false,
+        pointRadius: 0,
+        tension: 0
       }
     ]
   };
 
+  // Chart display options
   const chartOptions = {
     responsive: true,
+    // Let the chart resize to its container's height
+    maintainAspectRatio: false,
     scales: {
       x: {
         grid: { display: false },
-        ticks: { display: false }
+        ticks: {
+          autoSkip: true,
+          maxTicksLimit: 5
+        }
       },
       y: {
         grid: { display: false },
@@ -108,21 +134,16 @@ function ShardHealth() {
     },
     plugins: {
       legend: { position: "top" },
-      title: {
-        display: true,
-        text: "Shard Health Over Time"
-      },
+      title: { display: true, text: "Shard Health Over Time" },
       tooltip: {
         callbacks: {
           title: (tooltipItems) => {
-            // we only need the first item to get the data index
-            const index = tooltipItems[0].dataIndex;
-            const item = filteredData[index];
-            // Return a friendly date string
+            const idx = tooltipItems[0].dataIndex;
+            const item = filteredData[idx];
+            // Show full date/time on hover
             return new Date(item.timestamp).toLocaleString();
           },
           label: (context) => {
-            // e.g. "Red Shards: 94"
             const label = context.dataset.label || "";
             const value = context.parsed.y || 0;
             return `${label}: ${value}`;
@@ -133,50 +154,75 @@ function ShardHealth() {
   };
 
   return (
-    <div className="w-full bg-base-100 min-h-screen">
+    <div className="w-full bg-base-100">
       <Header />
 
-      <div className="max-w-5xl mx-auto p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold">Shard Health</h2>
-          <div className="btn-group">
-            <button
-              className={`btn btn-sm ${
-                selectedRange === "1D" ? "btn-active" : ""
-              }`}
-              onClick={() => setSelectedRange("1D")}
-            >
-              1 Day
-            </button>
-            <button
-              className={`btn btn-sm ${
-                selectedRange === "5D" ? "btn-active" : ""
-              }`}
-              onClick={() => setSelectedRange("5D")}
-            >
-              5 Day
-            </button>
-            <button
-              className={`btn btn-sm ${
-                selectedRange === "10D" ? "btn-active" : ""
-              }`}
-              onClick={() => setSelectedRange("10D")}
-            >
-              10 Day
-            </button>
-            <button
-              className={`btn btn-sm ${
-                selectedRange === "1M" ? "btn-active" : ""
-              }`}
-              onClick={() => setSelectedRange("1M")}
-            >
-              1 Month
-            </button>
-          </div>
+      {/* 
+        Constrain width to match the rest of the application (e.g. max-w-5xl).
+        "mx-auto" centers it, "p-4" gives padding.
+      */}
+      <div className="max-w-5xl mx-auto p-4 flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-4 text-center">Shard Health</h2>
+
+        {/* Time-range button group */}
+        <div className="btn-group mb-6">
+          <button
+            className={`btn btn-sm ${
+              selectedRange === "1D" ? "btn-active" : ""
+            }`}
+            onClick={() => setSelectedRange("1D")}
+          >
+            1 Day
+          </button>
+          <button
+            className={`btn btn-sm ${
+              selectedRange === "5D" ? "btn-active" : ""
+            }`}
+            onClick={() => setSelectedRange("5D")}
+          >
+            5 Day
+          </button>
+          <button
+            className={`btn btn-sm ${
+              selectedRange === "10D" ? "btn-active" : ""
+            }`}
+            onClick={() => setSelectedRange("10D")}
+          >
+            10 Day
+          </button>
+          <button
+            className={`btn btn-sm ${
+              selectedRange === "1M" ? "btn-active" : ""
+            }`}
+            onClick={() => setSelectedRange("1M")}
+          >
+            1 Month
+          </button>
         </div>
 
-        <div style={{ width: "75%", margin: "0 auto" }}>
+        {/* Chart container with a fixed height so it doesn't expand full screen */}
+        <div className="w-full" style={{ height: "400px"}}>
           <Line data={chartData} options={chartOptions} />
+        </div>
+
+        {/* Explanation Section */}
+        <div className="mt-8 p-4 bg-base-200 rounded text-center w-full">
+          <h3 className="text-lg font-semibold mb-2">Shard Color Logic</h3>
+          <p className="mb-2">
+            <strong className="text-red-600">Red Shards</strong>: Indicates a
+            critical state where the shard is non-responsive or needs immediate
+            attention.
+          </p>
+          <p className="mb-2">
+            <strong className="text-yellow-600">Amber (Yellow) Shards</strong>:
+            Suggests a warning or partially degraded state. The shard may be
+            slow or at risk.
+          </p>
+          <p className="mb-2">
+            <strong className="text-green-600">Green Shards</strong>: All good!
+            The shard is healthy, fully operational, and no immediate issues
+            detected.
+          </p>
         </div>
       </div>
     </div>
