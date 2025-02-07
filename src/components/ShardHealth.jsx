@@ -209,19 +209,17 @@ function ShardHealth() {
         <div className="mt-8 p-4 bg-base-200 rounded text-center w-full">
           <h3 className="text-lg font-semibold mb-2">Shard Color Logic</h3>
           <p className="mb-2">
-            <strong className="text-red-600">Red Shards</strong>: Indicates a
-            critical state where the shard is non-responsive or needs immediate
-            attention.
+            <strong className="text-red-600">Red Shards</strong>: 
+            Critical! shard is non-responsive or needs immediate
+            attention. 
           </p>
           <p className="mb-2">
             <strong className="text-yellow-600">Amber (Yellow) Shards</strong>:
-            Suggests a warning or partially degraded state. The shard may be
-            slow or at risk.
+            Warning! Partially degraded state. Condition: node_status = 'Active' AND event_pending over 2000.
           </p>
           <p className="mb-2">
             <strong className="text-green-600">Green Shards</strong>: All good!
-            The shard is healthy, fully operational, and no immediate issues
-            detected.
+            The shard is healthy, fully operational. node_status = 'Active' AND event_pending Less than 2000.
           </p>
         </div>
       </div>
