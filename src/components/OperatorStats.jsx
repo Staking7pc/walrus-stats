@@ -21,6 +21,7 @@ const OperatorStats = () => {
   const { id } = useParams();
   const [operatorData, setOperatorData] = useState(state?.operatorData || null);
   const [historicData, setHistoricData] = useState([]);
+  // filteredData is for blocks (displayed in descending order)
   const [filteredData, setFilteredData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -37,9 +38,15 @@ const OperatorStats = () => {
           `https://walrus.brightlystake.com/api/operator-historic-stats?x=${endpoint}`
         );
         const data = await response.json();
-        const reversedData = data.reverse();
-        setHistoricData(reversedData);
-        setFilteredData(reversedData.slice(-timeRange));
+
+        // Sort the data in descending order (reverse chronological order)
+        const sortedDataDesc = data.sort(
+          (a, b) => new Date(b.timestamp) - new Date(a.timestamp)
+        );
+
+        setHistoricData(sortedDataDesc);
+        // For blocks, we take the latest 'timeRange' records (which are at the beginning)
+        setFilteredData(sortedDataDesc.slice(0, timeRange));
         setLoading(false);
       } catch (err) {
         console.error('Failed to fetch historic data:', err);
@@ -51,6 +58,7 @@ const OperatorStats = () => {
     fetchHistoricData();
   }, [id, operatorData, timeRange]);
 
+  // Update filteredData when timeRange or historicData changes
   useEffect(() => {
     setFilteredData(historicData.slice(0, timeRange));
   }, [timeRange, historicData]);
@@ -73,9 +81,11 @@ const OperatorStats = () => {
   if (loading) return <div className="OperatorStats-loader">Loading...</div>;
   if (error) return <div className="OperatorStats-error-message">{error}</div>;
 
-  const ownedData = filteredData.map((record) => record.owned);
-  const shardReadyData = filteredData.map((record) => record.shard_ready);
-  const timestamps = filteredData.map((record) => record.timestamp);
+  // For the graph we want chronological order (oldest first)
+  const graphDataChronological = [...filteredData].reverse();
+  const ownedData = graphDataChronological.map((record) => record.owned);
+  const shardReadyData = graphDataChronological.map((record) => record.shard_ready);
+  const timestamps = graphDataChronological.map((record) => record.timestamp);
 
   const graphData = {
     labels: timestamps,
