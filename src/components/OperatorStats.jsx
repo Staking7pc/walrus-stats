@@ -35,7 +35,7 @@ const OperatorStats = () => {
       try {
         const endpoint = operatorData?.endpoint || id;
         const response = await fetch(
-          `https://walrus.brightlystake.com/api/operator-historic-stats?x=${endpoint}`
+          `https://walrus-stats-testnet.brightlystake.com/api/operator-historic-stats?x=${endpoint}`
         );
         const data = await response.json();
 

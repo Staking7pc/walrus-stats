@@ -12,7 +12,7 @@ const OperatorsDashboard = () => {
 
   // Fetch constants
   useEffect(() => {
-    fetch("https://walrus.brightlystake.com/api/walrus-constants")
+    fetch("https://walrus-stats-testnet.brightlystake.com/api/walrus-constants")
       .then((res) => res.json())
       .then((data) => setConstants(data))
       .catch((err) => console.error("Failed to fetch constants", err));
@@ -20,7 +20,7 @@ const OperatorsDashboard = () => {
 
   // Fetch data
   useEffect(() => {
-    fetch("https://walrus.brightlystake.com/api/get_latest_values")
+    fetch("https://walrus-stats-testnet.brightlystake.com/api/get_latest_values")
       .then((res) => res.json())
       .then((data) => setData(data))
       .catch((err) => console.error("Failed to fetch data", err));
@@ -28,7 +28,7 @@ const OperatorsDashboard = () => {
 
   // // Fetch stake info
   // useEffect(() => {
-  //   fetch("https://walrus.brightlystake.com/api/stake-info")
+  //   fetch("https://walrus-stats-testnet.brightlystake.com/api/stake-info")
   //     .then((res) => res.json())
   //     .then((data) => setStakeInfo(data))
   //     .catch((err) => console.error("Failed to fetch stake info", err));

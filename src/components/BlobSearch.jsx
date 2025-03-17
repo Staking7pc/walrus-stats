@@ -18,7 +18,7 @@ function BlobSearch() {
     setBlobInfo(null);
 
     try {
-      const response = await fetch('https://walrus.brightlystake.com/api2/get_blob_info', {
+      const response = await fetch('https://walrus-stats-testnet.brightlystake.com/api2/get_blob_info', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ blobId }),

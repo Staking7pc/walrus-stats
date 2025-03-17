@@ -32,7 +32,7 @@ function ShardHealth() {
 
   // Fetch data once
   useEffect(() => {
-    fetch('https://walrus.brightlystake.com/api/shard-health-v2')
+    fetch('https://walrus-stats-testnet.brightlystake.com/api/shard-health-v2')
       .then((res) => res.json())
       .then((data) => {
         // Sort by ascending timestamp
@@ -129,7 +129,7 @@ function ShardHealth() {
   const redShards = filteredData.map((d) => d.redshards);
   const greenShards = filteredData.map((d) => d.greenshards);
   const yellowShards = filteredData.map((d) => d.yellowshards);
-  const thresholdData = filteredData.map(() => 667);
+  const thresholdData = filteredData.map(() => 333);
 
   const shardChartData = {
     labels,
@@ -288,6 +288,10 @@ function ShardHealth() {
             <strong style={{ color: 'green' }}>Green Shards</strong>: All good!
             The shard is healthy, fully operational (node_status = "Active" AND
             event_pending &lt; 2000).
+          </p>
+          <p>
+            <strong style={{ color: 'grey' }}>Threshold</strong>: Max allowed red shards!
+            Network will halt if the red shard shard count hits threshold value
           </p>
         </div>
       </div>
