@@ -18,7 +18,7 @@ const ShardOwners = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://walrus-stats-testnet.brightlystake.com/api/shard-info"
+          "https://walrus-stats.brightlystake.com/api/shard-info"
         );
         const result = await response.json();
         const sortedData = result.sort(

@@ -32,7 +32,7 @@ function ShardHealth() {
 
   // Fetch data once
   useEffect(() => {
-    fetch('https://walrus-stats-testnet.brightlystake.com/api/shard-health-v2')
+    fetch('https://walrus-stats.brightlystake.com/api/shard-health-v2')
       .then((res) => res.json())
       .then((data) => {
         // Sort by ascending timestamp

@@ -2,7 +2,7 @@ At Brightlystake we are extremely thrilled about the possibilities that comes wi
 
 We have created a tool for the $WAL operators to measure their performance over a period of time. 
 ```
-1. Overall Dashboard, Individual Dashboard (https://walrus-stats-testnet.brightlystake.com)
+1. Overall Dashboard, Individual Dashboard (https://walrus-stats.brightlystake.com)
 ```
 Timelines 
         We get the data from /v1/health endpoint every 10 minutes.
@@ -23,7 +23,7 @@ Here we have the block represention in 3 colors
     GREEN - if 0. YELLOW - if > 0 and < 200. RED - if > 200. GREY - if NA
 
 ```
-2 . Shards Dashboard (https://walrus-stats-testnet.brightlystake.com/shard-owners)
+2 . Shards Dashboard (https://walrus-stats.brightlystake.com/shard-owners)
 ```
 The Shards Dashboard has 2 main features. Display which shard is assigned to which operator.
 
