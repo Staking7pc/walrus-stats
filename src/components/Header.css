@@ -3,29 +3,48 @@
  * Styles the Header component’s nav bar 
  ****************************/
 
-/* The parent container for the nav */
+/* Header container */
 .header-nav {
-  background-color: #99efe4;   /* The brownish header color */
+  background-color: #99efe4; /* sky blue */
   width: 100%;
+  padding: 0 12px;
+  overflow-x: auto;
 }
 
-/* Remove default list styling and use flex for horizontal layout */
+/* Horizontal nav layout */
 .header-nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
-
-  display: flex;          /* enables flex layout */
-  align-items: center;    /* vertically center the items */
-  justify-content: flex-start; /* brand at left, other items to the right */
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  white-space: nowrap;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding-bottom: 4px; /* allow space for scrollbar */
 }
 
-/* The brand (left-most item) */
+/* Optional scrollbar styling */
+.header-nav ul::-webkit-scrollbar {
+  height: 6px;
+}
+.header-nav ul::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+/* Brand */
 .header-nav .brand {
-  margin-right: auto;     /* pushes other nav items to the right side */
+  font-weight: bold;
+  font-size: larger;
+  padding: 14px 16px;
+  margin-right: auto;
+  flex: 0 0 auto;
 }
 
-/* Links (common styles) */
+/* Nav links */
 .header-nav li a {
   display: block;
   color: black;
@@ -34,18 +53,94 @@
   font-size: larger;
   font-weight: bolder;
   transition: background-color 0.2s ease-in-out;
+  flex: 0 0 auto;
 }
 
-/* Hover effect */
 .header-nav li a:hover {
   background-color: rgb(129, 240, 129);
-  border-radius: 4px; /* optional rounding on hover */
+  border-radius: 4px;
 }
 
-/* Active link styling */
 .header-nav a.active {
-  /* If you want to highlight the active link differently, add style here */
-  /* For example: */
-  background-color: #99efe4; /* A darker shade of brown */
+  background-color: #99efe4;
   border-radius: 4px;
+}
+
+/* Network Dropdown */
+.network-dropdown {
+  position: relative;
+  margin-left: 12px;
+  flex: 0 0 auto;
+}
+
+.network-toggle {
+  background: #99efe4;
+  border: 2px solid #99efe4;
+  border-radius: 6px;
+  color: black;
+  padding: 8px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 32px;
+}
+
+.network-toggle .dot {
+  width: 8px;
+  height: 8px;
+  background-color: #00a8a8;
+  border-radius: 50%;
+}
+
+.network-toggle .arrow {
+  margin-left: 4px;
+  font-size: 12px;
+  color: black;
+}
+
+/* Dropdown Menu */
+
+.dropdown-menu {
+  position: absolute;
+  right: 12px;
+  top: 60px; /* adjust based on header height */
+  background: #99efe4;
+  border: 1px solid #99efe4;
+  border-radius: 8px;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  padding: 8px 0;
+}
+
+
+.dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  color: black;
+}
+
+.dropdown-item:hover {
+  background: #80e0d5;
+}
+
+.dropdown-item .subtext {
+  font-size: 12px;
+  color: #007f7f;
+}
+
+.dropdown-item.active {
+  background: #80e0d5;
+  border-radius: 6px;
+}
+
+.checkmark {
+  font-size: 16px;
+  color: #007f7f;
 }
