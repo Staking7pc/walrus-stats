@@ -16,8 +16,15 @@ export default function Header() {
       testnet: "https://walrus-stats-testnet.brightlystake.com",
     };
     const current = isMainnet ? "mainnet" : "testnet";
-    if (target === current) return;
-    window.location.href = urls[target];
+    if (target === current) {
+      setDropdownOpen(false);
+      return;
+    }
+
+    // Optional: delay for dropdown to close before redirect
+    setTimeout(() => {
+      window.location.href = urls[target];
+    }, 100);
   };
 
   useEffect(() => {
@@ -32,10 +39,7 @@ export default function Header() {
   // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event) {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
     }
@@ -61,9 +65,9 @@ export default function Header() {
         </li>
       </ul>
 
-      {/* Move the dropdown outside the UL */}
+      {/* Move dropdown OUTSIDE the scroll area */}
       {dropdownOpen && (
-        <div className="dropdown-menu">
+        <div className="dropdown-menu" ref={dropdownRef}>
           <div
             className={`dropdown-item ${isMainnet ? "active" : ""}`}
             onClick={() => handleNetworkSwitch("mainnet")}

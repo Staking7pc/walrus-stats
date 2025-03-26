@@ -105,7 +105,7 @@
 .dropdown-menu {
   position: absolute;
   right: 12px;
-  top: 60px; /* adjust based on header height */
+  top: 60px; /* Adjust if needed */
   background: #99efe4;
   border: 1px solid #99efe4;
   border-radius: 8px;
@@ -114,7 +114,6 @@
   z-index: 1000;
   padding: 8px 0;
 }
-
 
 .dropdown-item {
   display: flex;
